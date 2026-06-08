@@ -1,0 +1,7 @@
+name: EzPlayTime
+version: '${version}'
+main: com.yxmax.ezPlayTime.EzPlayTime
+api-version: '1.14'
+folia-supported: true
+
+depend: [PlaceholderAPI]

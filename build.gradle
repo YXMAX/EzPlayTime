@@ -1,0 +1,82 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.5'
+}
+
+group = 'com.yxmax'
+version = '1.2.18'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc"
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
+        name = "spigotmc-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
+        name = 'MorePaperLib'
+        url = 'https://mvn-repo.arim.space/lesser-gpl3/'
+    }
+    maven {
+        url = "https://repo.codemc.org/repository/maven-public/"
+    }
+}
+
+dependencies {
+    compileOnly "org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT"
+    compileOnly 'me.clip:placeholderapi:2.11.5'
+    implementation 'space.arim.morepaperlib:morepaperlib:0.4.4'
+    implementation 'org.slf4j:slf4j-nop:1.7.36'
+    implementation 'com.zaxxer:HikariCP:4.0.3'
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'org.xerial:sqlite-jdbc:3.32.3.1'
+}
+
+shadowJar {
+    destinationDirectory = file('OutPut')
+    archiveClassifier.set('')
+    dependencies {
+        relocate("org.apache.commons", "com.dependencies.commons") {
+            include(dependency('commons-io:commons-io'))
+        }
+        relocate("space.arim.morepaperlib", "com.dependencies.arim.morepaperlib") {
+            include(dependency('space.arim.morepaperlib:morepaperlib'))
+        }
+        relocate("com.zaxxer", "com.dependencies.zaxxer") {
+            include(dependency('com.zaxxer:HikariCP'))
+        }
+        relocate("org.slf4j", "com.dependencies.slf4j") {
+            include(dependency('org.slf4j:slf4j-api'))
+        }
+        relocate("org.slf4j", "com.dependencies.slf4j") {
+            include(dependency('org.slf4j:slf4j-nop'))
+        }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    withJavadocJar()
+    withSourcesJar()
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

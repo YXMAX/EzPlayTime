@@ -1,0 +1,11 @@
+databases:
+  mysql: false
+  host: localhost
+  port: 3306
+  user: root
+  password: root
+  database: ezplaytime
+  max_pool_size: 50
+  min_idle: 25
+  allow_public_key_retrieval: false
+  use_ssl: true
