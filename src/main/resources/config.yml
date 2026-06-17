@@ -1,3 +1,11 @@
+
+time_display:
+  minutes: 'm'
+  hours: 'h'
+
+last_online:
+  no_record: 'No record'
+
 databases:
   mysql: false
   host: localhost

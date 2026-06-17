@@ -21,6 +21,12 @@ public class HandleUtil {
 
     public static boolean isUp118 = false;
 
+    public static String minute_prefix;
+
+    public static String hour_prefix;
+
+    public static String no_record_online;
+
     public void detectServerVersion() {
         String v = Bukkit.getBukkitVersion().split("-")[0];
         String[] split = v.split("\\.");
@@ -61,6 +67,9 @@ public class HandleUtil {
             recreateConfig();
         }
         plugin.reloadConfig();
+        minute_prefix = plugin.getConfig().getString("time_display.minutes");
+        hour_prefix = plugin.getConfig().getString("time_display.hours");
+        no_record_online = plugin.getConfig().getString("last_online.no_record");
     }
 
     private void recreateConfig(){
@@ -118,11 +127,7 @@ public class HandleUtil {
     public static String parseTime(long minutes){
         long hours = minutes / 60;
         long minute = minutes % 60;
-        if(isChineseLanguage){
-            return hours + " 小时 " + minute + " 分钟";
-        } else {
-            return hours + "h " + minute + "m";
-        }
+        return hours + hour_prefix + " " + minute + minute_prefix;
     }
 
     public void hotLoad(){

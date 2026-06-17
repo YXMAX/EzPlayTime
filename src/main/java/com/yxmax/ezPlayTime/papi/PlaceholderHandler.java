@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static com.yxmax.ezPlayTime.EzPlayTime.timeManager;
+import static com.yxmax.ezPlayTime.util.HandleUtil.no_record_online;
 
 public class PlaceholderHandler extends me.clip.placeholderapi.expansion.PlaceholderExpansion{
     @Override
@@ -30,36 +31,29 @@ public class PlaceholderHandler extends me.clip.placeholderapi.expansion.Placeho
 
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String args) {
-        if(args.equals("today_value")){
-            return String.valueOf(timeManager.getOfflineCounter(player.getUniqueId()).getToday());
-        }
-        if(args.equals("today_display")){
-            return HandleUtil.parseTime(timeManager.getOfflineCounter(player.getUniqueId()).getToday());
-        }
-        if(args.equals("week_value")){
-            return String.valueOf(timeManager.getOfflineCounter(player.getUniqueId()).getWeek());
-        }
-        if(args.equals("week_display")){
-            return HandleUtil.parseTime(timeManager.getOfflineCounter(player.getUniqueId()).getWeek());
-        }
-        if(args.equals("month_value")){
-            return String.valueOf(timeManager.getOfflineCounter(player.getUniqueId()).getMonth());
-        }
-        if(args.equals("month_display")){
-            return HandleUtil.parseTime(timeManager.getOfflineCounter(player.getUniqueId()).getMonth());
-        }
-        if(args.equals("total_value")){
-            return String.valueOf(timeManager.getOfflineCounter(player.getUniqueId()).getTotal());
-        }
-        if(args.equals("total_display")){
-            return HandleUtil.parseTime(timeManager.getOfflineCounter(player.getUniqueId()).getTotal());
-        }
-        if(args.equals("last_online")){
-            String lastOnline = timeManager.getOfflineCounter(player.getUniqueId()).getLast_online();
-            if(lastOnline != null){
-                return lastOnline;
-            }
-            return "无记录";
+        switch (args) {
+            case "today_value":
+                return String.valueOf(timeManager.getOfflineCounter(player.getUniqueId()).getToday());
+            case "today_display":
+                return HandleUtil.parseTime(timeManager.getOfflineCounter(player.getUniqueId()).getToday());
+            case "week_value":
+                return String.valueOf(timeManager.getOfflineCounter(player.getUniqueId()).getWeek());
+            case "week_display":
+                return HandleUtil.parseTime(timeManager.getOfflineCounter(player.getUniqueId()).getWeek());
+            case "month_value":
+                return String.valueOf(timeManager.getOfflineCounter(player.getUniqueId()).getMonth());
+            case "month_display":
+                return HandleUtil.parseTime(timeManager.getOfflineCounter(player.getUniqueId()).getMonth());
+            case "total_value":
+                return String.valueOf(timeManager.getOfflineCounter(player.getUniqueId()).getTotal());
+            case "total_display":
+                return HandleUtil.parseTime(timeManager.getOfflineCounter(player.getUniqueId()).getTotal());
+            case "last_online":
+                String lastOnline = timeManager.getOfflineCounter(player.getUniqueId()).getLast_online();
+                if (lastOnline != null) {
+                    return lastOnline;
+                }
+                return no_record_online;
         }
         return null;
     }
