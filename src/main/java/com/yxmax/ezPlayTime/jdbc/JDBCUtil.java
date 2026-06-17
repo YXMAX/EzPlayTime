@@ -24,13 +24,13 @@ public class JDBCUtil {
             if(ds == null){
                 return false;
             }
-            util.sendConsole("&a连接至 MySQL 数据库成功");
+            util.sendConsole("&a连接至 MySQL 数据库成功","&aMySQL databases connected");
         } else {
             ds = this.getSQLiteDataSource();
             if(ds == null){
                 return false;
             }
-            util.sendConsole("&a连接至 SQLite 数据库成功");
+            util.sendConsole("&a连接至 SQLite 数据库成功","&aSQLite databases connected");
         }
         this.createTable();
         return true;

@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static com.yxmax.ezPlayTime.EzPlayTime.*;
 import static org.bukkit.Bukkit.getServer;
@@ -44,7 +45,11 @@ public class HandleUtil {
             new PlaceholderHandler().register();
             return true;
         }
-        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "[EzPlayTime] 未检测到 PlaceholderAPI 前置插件! 插件将关闭..");
+        if(isChineseLanguage){
+            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "[EzPlayTime] 未检测到 PlaceholderAPI 前置插件! 插件将关闭..");
+        } else {
+            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "[EzPlayTime] Detecting PlaceholderAPI dependency failed! plugin will be disabled!");
+        }
         return false;
     }
 
@@ -60,6 +65,11 @@ public class HandleUtil {
 
     private void recreateConfig(){
         configFile.getParentFile().mkdirs();
+        Locale server_locale = Locale.getDefault();
+        String language = server_locale.toLanguageTag();
+        if(language.equals("zh-CN")){
+            isChineseLanguage = true;
+        }
         try {
             FileUtils.copyInputStreamToFile(plugin.getResource("config.yml"), new File(plugin.getDataFolder(), "config.yml"));
         } catch (IOException e) {
@@ -108,21 +118,29 @@ public class HandleUtil {
     public static String parseTime(long minutes){
         long hours = minutes / 60;
         long minute = minutes % 60;
-        return hours + " 小时 " + minute + " 分钟";
+        if(isChineseLanguage){
+            return hours + " 小时 " + minute + " 分钟";
+        } else {
+            return hours + "h " + minute + "m";
+        }
     }
 
     public void hotLoad(){
         if(Bukkit.getOnlinePlayers().isEmpty()){
             return;
         }
-        this.sendConsole("&e热加载服务端内玩家数据..");
+        this.sendConsole("&e热加载服务端内玩家数据..","&eHot loading player's data...");
         for(Player player : Bukkit.getOnlinePlayers()){
             jdbcUtil.playerJoin(player.getUniqueId());
         }
     }
 
-    public void sendConsole(String msg){
-        getServer().getConsoleSender().sendMessage(color("&f[EzPlayTime] " + msg));
+    public void sendConsole(String cn,String us){
+        if(isChineseLanguage){
+            getServer().getConsoleSender().sendMessage(color("&f[EzPlayTime] " + cn));
+        } else {
+            getServer().getConsoleSender().sendMessage(color("&f[EzPlayTime] " + us));
+        }
     }
 
     public static String color(String msg){

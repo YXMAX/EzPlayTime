@@ -55,7 +55,7 @@ public class TimeManager {
     }
 
     public void unload(){
-        util.sendConsole("&e卸载前保存在线玩家数据..");
+        util.sendConsole("&e卸载前保存在线玩家数据..","Saving online player's data...");
         jdbcUtil.updateManager(this.timeCounters);
     }
 

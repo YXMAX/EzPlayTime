@@ -43,6 +43,8 @@ public final class EzPlayTime extends JavaPlugin {
 
     public static FileConfiguration config;
 
+    public static boolean isChineseLanguage;
+
     @Override
     public void onEnable() {
         plugin = this;
